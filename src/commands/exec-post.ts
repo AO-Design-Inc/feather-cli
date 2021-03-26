@@ -1,7 +1,7 @@
 import {Command} from '@oclif/command';
 import {readFileSync} from 'fs';
 import {prompt} from 'inquirer';
-import {interactWrite, readContract} from 'smartweave';
+import {interactWrite, interactWriteDryRun, readContract} from 'smartweave';
 import {Constants} from '../i';
 interface ExecData {
   fileaddress: string;
@@ -83,7 +83,7 @@ export default class ExecuteGetFile extends Command {
     const execAddress =
       exec.executables[object[0].prop.valueOf()].executable
         .executable_address;
-    interactWrite(
+    interactWriteDryRun(
       Constants.client,
       Constants.jwk(araddress),
       Constants.contractID,

@@ -1,6 +1,6 @@
 import {Command, flags} from '@oclif/command';
 import {prompt} from 'inquirer';
-import {interactWrite, readContract} from 'smartweave';
+import {interactWrite, interactWriteDryRun, readContract} from 'smartweave';
 import {string} from '@oclif/command/lib/flags';
 import {Constants} from '../i';
 
@@ -64,7 +64,7 @@ export default class Execute extends Command {
       // Implement method to automatically return lowest bid
 
       // Console.log(typeof Object.values(data[dataAddress].bids))
-      await interactWrite(
+      await interactWriteDryRun(
         Constants.client,
         Constants.jwk(araddress),
         Constants.contractID,
