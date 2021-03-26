@@ -1,0 +1,64 @@
+{
+  "name": "feather",
+  "description": "A CLI to interact with the Feather network.",
+  "version": "0.0.0",
+  "author": "okirpane",
+  "bin": {
+    "feather": "./bin/run"
+  },
+  "bugs": "https://github.com/okirpane/feather-cli/issues",
+  "dependencies": {
+    "@oclif/command": "^1.8.0",
+    "@oclif/config": "^1.17.0",
+    "@oclif/plugin-help": "^3.2.2",
+    "arweave": "^1.10.13",
+    "follow-redirects": "^1.13.3",
+    "inquirer": "^8.0.0",
+    "smartweave": "^0.4.27",
+    "tslib": "^1.14.1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.26.0",
+    "@types/follow-redirects": "^1.13.0",
+    "@types/node": "^10.17.55",
+    "ava": "^2.0.0",
+    "globby": "^10.0.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.9",
+    "xo": "^0.38.2"
+  },
+  "xo": {
+    "prettier": true
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/okirpane/feather-cli",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "feather",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "okirpane/feather-cli",
+  "scripts": {
+    "postpack": "rimraf oclif.manifest.json",
+    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "xo && ava",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts"
+}
