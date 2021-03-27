@@ -1,8 +1,8 @@
-import {Command} from '@oclif/command';
-import {prompt} from 'inquirer';
-import {interactWriteDryRun, readContract} from 'smartweave';
-import {Constants} from '../i';
-import {readFile, writeFile} from 'fs';
+import { Command } from '@oclif/command';
+import { prompt } from 'inquirer';
+import { interactWrite, interactWriteDryRun, readContract } from 'smartweave';
+import { Constants } from '../i';
+import { readFile, writeFile } from 'fs';
 interface ExecData {
   araddress: string;
   executable: string;
@@ -32,8 +32,8 @@ export default class Execute extends Command {
         name: 'executable',
         message: 'Select the executables',
         default: [
-          {name: 1, value: 1},
-          {name: 2, value: 2}
+          { name: 1, value: 1 },
+          { name: 2, value: 2 }
         ],
         choices: async () => getContract()
       },
@@ -62,11 +62,11 @@ export default class Execute extends Command {
   }
 
   async makeExec(execData: ExecData) {
-    const {araddress, executable, bid, bidAmount} = execData;
+    const { araddress, executable, bid, bidAmount } = execData;
     this.log('File accepted!');
     if (bid) {
       // Write bid to contract
-      await interactWriteDryRun(
+      await interactWrite(
         Constants.client,
         Constants.jwk(araddress),
         Constants.contractID,
@@ -87,7 +87,7 @@ export default class Execute extends Command {
             console.log(error);
           } else {
             const object = JSON.parse(data);
-            object.push({prop: executable.valueOf()});
+            object.push({ prop: executable.valueOf() });
             const json = JSON.stringify(object);
             writeFile(
               'myjsonfile.json',
@@ -107,20 +107,22 @@ export default class Execute extends Command {
 
   async run() {
     this.log('Welcome to Feather');
-    const {args, flags} = this.parse(Execute);
-    const {count} = args;
-    const {araddress} = flags;
+    const { args, flags } = this.parse(Execute);
+    const { count } = args;
+    const { araddress } = flags;
     const execData: ExecData =
       count !== null && count > 0 && araddress === null
         ? {
-            araddress: '',
-            executable: '',
-            bidAmount: 0,
-            bid: false
-          }
+          araddress: '',
+          executable: '',
+          bidAmount: 0,
+          bid: false
+        }
         : await this.getInteractiveArgs();
 
-    await this.makeExec(execData);
+    await this.makeExec(execData).catch((error) => {
+      console.log(error);
+    });;
   }
 }
 
@@ -128,12 +130,14 @@ async function getContract() {
   const exec = await readContract(
     Constants.client,
     Constants.contractID
-  );
+  ).catch((error) => {
+    console.log(error);
+  });
   const data = exec.executables;
   const inputArray = [];
   for (const i in data)
     if (i) {
-      inputArray.push({name: i, value: i});
+      inputArray.push({ name: i, value: i });
     }
 
   return inputArray;

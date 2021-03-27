@@ -2,7 +2,7 @@
 import {Command} from '@oclif/command';
 import {readFileSync} from 'fs';
 import {prompt} from 'inquirer';
-import {interactWriteDryRun} from 'smartweave';
+import {interactWrite, interactWriteDryRun} from 'smartweave';
 import {Constants} from '../i';
 interface FeatherData {
   fileaddress: string;
@@ -70,7 +70,7 @@ export default class Prop extends Command {
         `${uploader.pctComplete} % complete, ${uploader.uploadedChunks} / ${uploader.totalChunks}`
       );
     }
-    const write = interactWriteDryRun(
+    const write = interactWrite(
       Constants.client,
       Constants.jwk(araddress),
       Constants.contractID,

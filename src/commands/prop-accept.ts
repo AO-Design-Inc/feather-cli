@@ -32,15 +32,7 @@ export default class Execute extends Command {
         type: string,
         name: 'dataAddress',
         message: 'Type in the ARWaeve Address for your transaction: ',
-        default: null,
-        validate(value) {
-          const back: number = value.indexOf('\\');
-          if (back === -1) {
-            return 'This is not a path';
-          }
-
-          return true;
-        }
+        default: null
       },
       {
         type: 'confirm',
@@ -64,14 +56,15 @@ export default class Execute extends Command {
       // Implement method to automatically return lowest bid
 
       // Console.log(typeof Object.values(data[dataAddress].bids))
-      await interactWriteDryRun(
+      console.log(data[dataAddress].bids[0])
+      await interactWrite(
         Constants.client,
         Constants.jwk(araddress),
         Constants.contractID,
         {
           function: 'accept',
           executable_key: dataAddress,
-          accepted_bid: data[dataAddress].bids[0].bidder
+          accepted_bid: data[dataAddress].bids[0]
         }
       ).catch((error)=>{
           console.log(error)

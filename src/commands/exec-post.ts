@@ -6,6 +6,7 @@ import {Constants} from '../i';
 interface ExecData {
   fileaddress: string;
   araddress: string;
+  executable: string;
   bid: boolean;
 }
 export default class ExecuteGetFile extends Command {
@@ -23,6 +24,16 @@ export default class ExecuteGetFile extends Command {
           }
           return true;
         }
+      },
+      {
+        type: 'checkbox',
+        name: 'executable',
+        message: 'Select the executables',
+        default: [
+          { name: 1, value: 1 },
+          { name: 2, value: 2 }
+        ],
+        choices: async () => getContract()
       },
       {
         type: 'string',
@@ -47,7 +58,7 @@ export default class ExecuteGetFile extends Command {
     return answer;
   }
   async makeExec(execData: ExecData) {
-    const {araddress, fileaddress} = execData;
+    const {executable, araddress, fileaddress} = execData;
     this.log('File accepted!');
     const data = readFileSync(fileaddress);
     const fileType: string = fileaddress.slice(
@@ -73,22 +84,12 @@ export default class ExecuteGetFile extends Command {
       );
     }
     console.log(transaction.id);
-    const object = JSON.parse(
-      readFileSync('myjsonfile.json').toString()
-    );
-    const exec = await readContract(
-      Constants.client,
-      Constants.contractID
-    );
-    const execAddress =
-      exec.executables[object[0].prop.valueOf()].executable
-        .executable_address;
-    interactWriteDryRun(
+    interactWrite(
       Constants.client,
       Constants.jwk(araddress),
       Constants.contractID,
       {
-        executable_address: execAddress,
+        executable_key: executable,
         result_address: transaction.id,
         function: 'result'
       }
@@ -109,3 +110,19 @@ export default class ExecuteGetFile extends Command {
     await this.makeExec(execData);
   }
 }
+async function getContract() {
+    const exec = await readContract(
+      Constants.client,
+      Constants.contractID
+    ).catch((error) => {
+      console.log(error);
+    });
+    const data = exec.executables;
+    const inputArray = [];
+    for (const i in data)
+      if (i) {
+        inputArray.push({ name: i, value: i });
+      }
+  
+    return inputArray;
+  }

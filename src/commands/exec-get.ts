@@ -28,8 +28,9 @@ export default class ExecuteGetFile extends Command {
       Constants.contractID
     );
     const address: string =
-      c.executables[object[0].prop.valueOf()].executable
+      c.executables[object[object.length-1].prop.valueOf()].executable
         .executable_address;
+        console.log(address)
     const ref = `https://arweave.net/${address}`;
 
     open(`${address}-feather.wasm`, 'w', (error: any, file: any) => {
