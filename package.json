@@ -1,10 +1,10 @@
 {
-  "name": "feather",
+  "name": "feather-cli",
   "description": "A CLI to interact with the Feather network.",
   "version": "0.0.0",
   "author": "okirpane",
   "bin": {
-    "feather": "./bin/run"
+    "feather-cli": "./bin/run"
   },
   "bugs": "https://github.com/okirpane/feather-cli/issues",
   "dependencies": {
@@ -50,7 +50,7 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "feather",
+    "bin": "feather-cli",
     "plugins": [
       "@oclif/plugin-help"
     ]

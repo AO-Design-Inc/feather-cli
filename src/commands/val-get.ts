@@ -51,11 +51,7 @@ export default class ExecuteGetFile extends Command {
           .get(add)
           .then((transaction) => {
             for (const tag of transaction.get('tags')) {
-              const key: string = tag.get('name', {
-                decode: true,
-                string: true
-              });
-              const value: string = tag.get('value', {
+              const value: string = (tag as any).get('value', {
                 decode: true,
                 string: true
               });
@@ -104,7 +100,7 @@ async function getContract() {
         inputArray.push({name: i, value: i});
       }
     return inputArray;
-  } catch (error: unknown) {
+  } catch (error) {
     console.error(error);
   }
 }

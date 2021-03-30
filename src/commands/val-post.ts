@@ -90,7 +90,7 @@ export default class ExecuteGetFile extends Command {
     const hash = createHash('sha256').update(localFile).digest('hex');
     const validationObject: Record<string, unknown> = {
       hash,
-      is_correct: equal(localBuffer, remoteFile)
+      is_correct: equal(localBuffer, (remoteFile as Uint8Array))
     };
     const validationObjectEncrypted = await Arweave.crypto
       .encrypt(Buffer.from(JSON.stringify(validationObject)), 'sokka')
