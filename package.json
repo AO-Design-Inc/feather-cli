@@ -14,6 +14,7 @@
     "arweave": "^1.10.13",
     "follow-redirects": "^1.13.3",
     "inquirer": "^8.0.0",
+    "request": "^2.88.2",
     "smartweave": "^0.4.27",
     "tslib": "^1.14.1"
   },
@@ -21,6 +22,7 @@
     "@oclif/dev-cli": "^1.26.0",
     "@types/follow-redirects": "^1.13.0",
     "@types/node": "^10.17.55",
+    "@types/request": "^2.48.5",
     "ava": "^2.0.0",
     "globby": "^10.0.2",
     "rimraf": "^3.0.2",
