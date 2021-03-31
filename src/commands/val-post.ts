@@ -24,12 +24,7 @@ export default class ExecuteGetFile extends Command {
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
         validate(value) {
-          const back: number = value.indexOf('\\');
-          if (back === -1) {
-            return 'This is not a path';
-          }
-
-          return true;
+          Constants.isPath(value)
         }
       },
       {
@@ -49,12 +44,7 @@ export default class ExecuteGetFile extends Command {
           'Type/Drop in the path to the file you have validated: ',
         default: null,
         validate(value) {
-          const back: number = value.indexOf('\\');
-          if (back === -1) {
-            return 'This is not a path';
-          }
-
-          return true;
+          return Constants.isPath(value)
         }
       },
       {

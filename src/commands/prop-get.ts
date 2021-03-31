@@ -12,6 +12,7 @@ interface ExecData {
 }
 
 export default class Execute extends Command {
+
   async getInteractiveArgs() {
     const answer = await prompt([
       {

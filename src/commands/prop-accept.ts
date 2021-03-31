@@ -3,6 +3,7 @@ import {prompt} from 'inquirer';
 import {interactWrite, interactWriteDryRun, readContract} from 'smartweave';
 import {string} from '@oclif/command/lib/flags';
 import {Constants} from '../i';
+import { PathLike } from 'fs';
 
 interface ExecData {
   araddress: string;
@@ -19,14 +20,6 @@ export default class Execute extends Command {
         name: 'araddress',
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
-        validate(value) {
-          const back: number = value.indexOf('\\');
-          if (back === -1) {
-            return 'This is not a path';
-          }
-
-          return true;
-        }
       },
       {
         type: string,
@@ -54,10 +47,10 @@ export default class Execute extends Command {
       );
       const data = exec.executables;
       // Implement method to automatically return lowest bid
-
+      console.log(araddress, Constants.isPath(araddress))
       // Console.log(typeof Object.values(data[dataAddress].bids))
       console.log(data[dataAddress].bids[0])
-      await interactWrite(
+      await interactWriteDryRun(
         Constants.client,
         Constants.jwk(araddress),
         Constants.contractID,
