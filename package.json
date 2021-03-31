@@ -1,7 +1,7 @@
 {
   "name": "feather-cli",
   "description": "A CLI to interact with the Feather network.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "okirpane",
   "bin": {
     "feather-cli": "./bin/run"

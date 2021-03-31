@@ -19,7 +19,7 @@ export default class Execute extends Command {
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
         validate(value) {
-          Constants.isPath(value)
+          return Constants.isPath(value)
         }
       },
       {
