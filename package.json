@@ -58,7 +58,7 @@
   "repository": "okirpane/feather-cli",
   "scripts": {
     "postpack": "rimraf oclif.manifest.json",
-    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme && npm shrinkwrap",
+    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "xo && ava",
     "version": "oclif-dev readme && git add README.md"
   },
