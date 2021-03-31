@@ -18,9 +18,7 @@ export default class Execute extends Command {
         name: 'araddress',
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
-        validate(value) {
-          return Constants.isPath(value)
-        }
+        validate: (value) => Constants.isPath(value)
       },
       {
         type: 'checkbox',

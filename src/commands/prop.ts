@@ -18,9 +18,7 @@ export default class Prop extends Command {
         name: 'araddress',
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
-        validate(value) {
-          return Constants.isPath(value)
-        }
+        validate: (value) => Constants.isPath(value)
       },
       {
         type: 'string',
@@ -28,13 +26,7 @@ export default class Prop extends Command {
         message:
           'Type/Drop in the path to the file you want to run: ',
         default: null,
-        validate(value) {
-          const back: number = value.indexOf('\\');
-          if (back === -1) {
-            return 'This is not a path';
-          }
-          return true;
-        }
+        validate: (value) => Constants.isPath(value)
       }
     ]);
     return answer;

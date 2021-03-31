@@ -23,9 +23,7 @@ export default class ExecuteGetFile extends Command {
         name: 'araddress',
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
-        validate(value) {
-          Constants.isPath(value)
-        }
+        validate: (value) => Constants.isPath(value)
       },
       {
         type: 'checkbox',
@@ -43,9 +41,7 @@ export default class ExecuteGetFile extends Command {
         message:
           'Type/Drop in the path to the file you have validated: ',
         default: null,
-        validate(value) {
-          return Constants.isPath(value)
-        }
+        validate: (value) => Constants.isPath(value)
       },
       {
         type: 'confirm',
