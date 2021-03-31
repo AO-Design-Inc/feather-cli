@@ -1,5 +1,5 @@
 import {PathLike, readFileSync} from 'fs';
-import Arweave from 'Arweave'
+import Arweave from 'arweave';
 export namespace Constants {
   // Contract address
   export const contractID =

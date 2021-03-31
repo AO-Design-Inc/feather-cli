@@ -1,7 +1,7 @@
 {
   "name": "feather-cli",
   "description": "A CLI to interact with the Feather network.",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "okirpane",
   "bin": {
     "feather-cli": "./bin/run"
@@ -58,7 +58,7 @@
   "repository": "okirpane/feather-cli",
   "scripts": {
     "postpack": "rimraf oclif.manifest.json",
-    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme && npm shrinkwrap",
     "test": "xo && ava",
     "version": "oclif-dev readme && git add README.md"
   },
