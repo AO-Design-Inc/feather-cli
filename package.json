@@ -1,7 +1,7 @@
 {
   "name": "feather-cli",
   "description": "A CLI to interact with the Feather network.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "okirpane",
   "bin": {
     "feather-cli": "./bin/run"
@@ -11,11 +11,15 @@
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.2",
+    "@types/follow-redirects": "^1.13.0",
+    "@wasmer/wasi": "^0.12.0",
+    "@wasmer/wasm-transformer": "^0.12.0",
     "arweave": "^1.10.13",
     "follow-redirects": "^1.13.3",
     "inquirer": "^8.0.0",
     "node-fetch": "^2.6.1",
     "request": "^2.88.2",
+    "rimraf": "^3.0.2",
     "smartweave": "^0.4.27",
     "tslib": "^1.14.1"
   },

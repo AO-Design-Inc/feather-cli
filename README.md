@@ -20,7 +20,7 @@ $ npm install -g feather-cli
 $ feather-cli COMMAND
 running command...
 $ feather-cli (-v|--version|version)
-feather-cli/0.0.3 win32-x64 node-v12.18.1
+feather-cli/0.0.4 win32-x64 node-v15.13.0
 $ feather-cli --help [COMMAND]
 USAGE
   $ feather-cli COMMAND
@@ -32,6 +32,7 @@ USAGE
 * [`feather-cli exec-bid`](#feather-cli-exec-bid)
 * [`feather-cli exec-get`](#feather-cli-exec-get)
 * [`feather-cli exec-post`](#feather-cli-exec-post)
+* [`feather-cli exec-wasm [FILE]`](#feather-cli-exec-wasm-file)
 * [`feather-cli help [COMMAND]`](#feather-cli-help-command)
 * [`feather-cli prop`](#feather-cli-prop)
 * [`feather-cli prop-accept`](#feather-cli-prop-accept)
@@ -46,7 +47,7 @@ USAGE
   $ feather-cli exec-bid
 ```
 
-_See code: [src/commands/exec-bid.ts](https://github.com/okirpane/feather-cli/blob/v0.0.3/src/commands/exec-bid.ts)_
+_See code: [src/commands/exec-bid.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/exec-bid.ts)_
 
 ## `feather-cli exec-get`
 
@@ -55,7 +56,7 @@ USAGE
   $ feather-cli exec-get
 ```
 
-_See code: [src/commands/exec-get.ts](https://github.com/okirpane/feather-cli/blob/v0.0.3/src/commands/exec-get.ts)_
+_See code: [src/commands/exec-get.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/exec-get.ts)_
 
 ## `feather-cli exec-post`
 
@@ -64,7 +65,21 @@ USAGE
   $ feather-cli exec-post
 ```
 
-_See code: [src/commands/exec-post.ts](https://github.com/okirpane/feather-cli/blob/v0.0.3/src/commands/exec-post.ts)_
+_See code: [src/commands/exec-post.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/exec-post.ts)_
+
+## `feather-cli exec-wasm [FILE]`
+
+Run a local wasm file.
+
+```
+USAGE
+  $ feather-cli exec-wasm [FILE]
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/exec-wasm.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/exec-wasm.ts)_
 
 ## `feather-cli help [COMMAND]`
 
@@ -92,7 +107,7 @@ USAGE
   $ feather-cli prop
 ```
 
-_See code: [src/commands/prop.ts](https://github.com/okirpane/feather-cli/blob/v0.0.3/src/commands/prop.ts)_
+_See code: [src/commands/prop.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/prop.ts)_
 
 ## `feather-cli prop-accept`
 
@@ -101,7 +116,7 @@ USAGE
   $ feather-cli prop-accept
 ```
 
-_See code: [src/commands/prop-accept.ts](https://github.com/okirpane/feather-cli/blob/v0.0.3/src/commands/prop-accept.ts)_
+_See code: [src/commands/prop-accept.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/prop-accept.ts)_
 
 ## `feather-cli prop-get`
 
@@ -110,7 +125,7 @@ USAGE
   $ feather-cli prop-get
 ```
 
-_See code: [src/commands/prop-get.ts](https://github.com/okirpane/feather-cli/blob/v0.0.3/src/commands/prop-get.ts)_
+_See code: [src/commands/prop-get.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/prop-get.ts)_
 
 ## `feather-cli val-get`
 
@@ -119,7 +134,7 @@ USAGE
   $ feather-cli val-get
 ```
 
-_See code: [src/commands/val-get.ts](https://github.com/okirpane/feather-cli/blob/v0.0.3/src/commands/val-get.ts)_
+_See code: [src/commands/val-get.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/val-get.ts)_
 
 ## `feather-cli val-post`
 
@@ -128,5 +143,5 @@ USAGE
   $ feather-cli val-post
 ```
 
-_See code: [src/commands/val-post.ts](https://github.com/okirpane/feather-cli/blob/v0.0.3/src/commands/val-post.ts)_
+_See code: [src/commands/val-post.ts](https://github.com/okirpane/feather-cli/blob/v0.0.4/src/commands/val-post.ts)_
 <!-- commandsstop -->
