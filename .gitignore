@@ -3,6 +3,7 @@
 /.nyc_output
 /dist
 /lib
+/bin
 /tmp
 /yarn.lock
 node_modules
