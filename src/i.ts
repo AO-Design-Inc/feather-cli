@@ -29,10 +29,10 @@ export namespace ArweaveUtils {
   const writeTest = async (
     a: PathLike,
     o: Record<string, unknown>
-  ): Promise<string | boolean> => {
+  ): Promise<Error | boolean> => {
     return interactWriteDryRun(client, jwk(a), contractID, o).then(
       (data) => {
-        return data.type === 'error' ? data.result : true;
+        return data.type === 'error' ? Error(data.result) : true;
       }
     );
   };
