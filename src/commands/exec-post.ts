@@ -1,8 +1,12 @@
 import {Command} from '@oclif/command';
 import {readFileSync} from 'fs';
 import {prompt} from 'inquirer';
-import {interactWrite, interactWriteDryRun, readContract} from 'smartweave';
-import {Constants} from '../i';
+import {
+  interactWrite,
+  interactWriteDryRun,
+  readContract
+} from 'smartweave';
+import {ArweaveUtils} from '../i';
 interface ExecData {
   fileaddress: string;
   araddress: string;
@@ -17,15 +21,15 @@ export default class ExecuteGetFile extends Command {
         name: 'araddress',
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
-        validate: (value) => Constants.isPath(value)
+        validate: (value) => ArweaveUtils.isPath(value)
       },
       {
         type: 'checkbox',
         name: 'executable',
         message: 'Select the executables',
         default: [
-          { name: 1, value: 1 },
-          { name: 2, value: 2 }
+          {name: 1, value: 1},
+          {name: 2, value: 2}
         ],
         choices: async () => getContract()
       },
@@ -35,7 +39,7 @@ export default class ExecuteGetFile extends Command {
         message:
           'Type/Drop in the path to the file you want to run: ',
         default: null,
-        validate: (value) => Constants.isPath(value)
+        validate: (value) => ArweaveUtils.isPath(value)
       },
       {
         type: 'confirm',
@@ -45,6 +49,7 @@ export default class ExecuteGetFile extends Command {
     ]);
     return answer;
   }
+
   async makeExec(execData: ExecData) {
     const {executable, araddress, fileaddress} = execData;
     this.log('File accepted!');
@@ -53,16 +58,16 @@ export default class ExecuteGetFile extends Command {
       fileaddress.lastIndexOf('.') + 1,
       fileaddress.length
     );
-    const transaction = await Constants.client.createTransaction(
+    const transaction = await ArweaveUtils.client.createTransaction(
       {data},
-      Constants.jwk(araddress)
+      ArweaveUtils.jwk(araddress)
     );
     transaction.addTag('Content-type', fileType);
-    await Constants.client.transactions.sign(
+    await ArweaveUtils.client.transactions.sign(
       transaction,
-      Constants.jwk(araddress)
+      ArweaveUtils.jwk(araddress)
     );
-    const uploader = await Constants.client.transactions.getUploader(
+    const uploader = await ArweaveUtils.client.transactions.getUploader(
       transaction
     );
     while (!uploader.isComplete) {
@@ -71,21 +76,16 @@ export default class ExecuteGetFile extends Command {
         `${uploader.pctComplete} % complete, ${uploader.uploadedChunks} / ${uploader.totalChunks}`
       );
     }
+
     console.log(transaction.id);
-    interactWrite(
-      Constants.client,
-      Constants.jwk(araddress),
-      Constants.contractID,
-      {
-        executable_key: executable,
-        result_address: transaction.id,
-        function: 'result'
-      }
-    ).catch((error) => {
-      console.log(error);
+    ArweaveUtils.write(araddress, {
+      executable_key: executable,
+      result_address: transaction.id,
+      function: 'result'
     });
     console.log('Upload Complete');
   }
+
   async run() {
     this.log('Welcome to Feather');
     const {args, flags} = this.parse(ExecuteGetFile);
@@ -99,18 +99,18 @@ export default class ExecuteGetFile extends Command {
   }
 }
 async function getContract() {
-    const exec = await readContract(
-      Constants.client,
-      Constants.contractID
-    ).catch((error) => {
-      console.log(error);
-    });
-    const data = exec.executables;
-    const inputArray = [];
-    for (const i in data)
-      if (i) {
-        inputArray.push({ name: i, value: i });
-      }
-  
-    return inputArray;
-  }
+  const exec = await readContract(
+    ArweaveUtils.client,
+    ArweaveUtils.contractID
+  ).catch((error) => {
+    console.log(error);
+  });
+  const data = exec.executables;
+  const inputArray = [];
+  for (const i in data)
+    if (i) {
+      inputArray.push({name: i, value: i});
+    }
+
+  return inputArray;
+}

@@ -2,8 +2,7 @@
 import {Command} from '@oclif/command';
 import {readFileSync} from 'fs';
 import {prompt} from 'inquirer';
-import {interactWrite, interactWriteDryRun} from 'smartweave';
-import {Constants} from '../i';
+import {ArweaveUtils} from '../i';
 interface FeatherData {
   fileaddress: string;
   araddress: string;
@@ -18,7 +17,7 @@ export default class Prop extends Command {
         name: 'araddress',
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
-        validate: (value) => Constants.isPath(value)
+        validate: (value) => ArweaveUtils.isPath(value)
       },
       {
         type: 'string',
@@ -26,11 +25,12 @@ export default class Prop extends Command {
         message:
           'Type/Drop in the path to the file you want to run: ',
         default: null,
-        validate: (value) => Constants.isPath(value)
+        validate: (value) => ArweaveUtils.isPath(value)
       }
     ]);
     return answer;
   }
+
   async makeFeather(featherData: FeatherData) {
     const {araddress, fileaddress} = featherData;
     this.log('File accepted!');
@@ -40,16 +40,16 @@ export default class Prop extends Command {
       fileaddress.length
     );
     const data: Buffer = readFileSync(fileaddress);
-    const transaction = await Constants.client.createTransaction(
-      { data },
-      Constants.jwk(araddress)
+    const transaction = await ArweaveUtils.client.createTransaction(
+      {data},
+      ArweaveUtils.jwk(araddress)
     );
     transaction.addTag('Content-type', fileType);
-    await Constants.client.transactions.sign(
+    await ArweaveUtils.client.transactions.sign(
       transaction,
-      Constants.jwk(araddress)
+      ArweaveUtils.jwk(araddress)
     );
-    const uploader = await Constants.client.transactions.getUploader(
+    const uploader = await ArweaveUtils.client.transactions.getUploader(
       transaction
     );
     while (!uploader.isComplete) {
@@ -58,28 +58,25 @@ export default class Prop extends Command {
         `${uploader.pctComplete} % complete, ${uploader.uploadedChunks} / ${uploader.totalChunks}`
       );
     }
-    const write = interactWrite(
-      Constants.client,
-      Constants.jwk(araddress),
-      Constants.contractID,
-      {
-        executable_address: transaction.id,
-        executable_kind: 'wasm',
-        function: 'propose'
-      }
-    );
-    write.catch((error) => {
-      console.log(error);
+
+    const write = ArweaveUtils.write(araddress, {
+      executable_address: transaction.id,
+      executable_kind: 'wasm',
+      function: 'propose'
     });
     console.log('Upload Complete');
   }
+
   async run() {
     this.log('Welcome to Feather');
     const {args, flags} = this.parse(Prop);
     const {count} = args;
     const {araddress, fileaddress} = flags;
     const featherData: FeatherData =
-      count !== null && count > 0 && araddress === null && fileaddress === null
+      count !== null &&
+      count > 0 &&
+      araddress === null &&
+      fileaddress === null
         ? {
             fileaddress: '',
             araddress: ''

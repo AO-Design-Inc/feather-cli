@@ -1,9 +1,8 @@
-import {Command, flags} from '@oclif/command';
+import {Command} from '@oclif/command';
 import {prompt} from 'inquirer';
-import {interactWrite, interactWriteDryRun, readContract} from 'smartweave';
+import {readContract} from 'smartweave';
 import {string} from '@oclif/command/lib/flags';
-import {Constants} from '../i';
-import { PathLike } from 'fs';
+import {ArweaveUtils} from '../i';
 
 interface ExecData {
   araddress: string;
@@ -19,7 +18,7 @@ export default class Execute extends Command {
         type: 'string',
         name: 'araddress',
         message: 'Type/Drop in the path to your ARWeave key-file: ',
-        default: null,
+        default: null
       },
       {
         type: string,
@@ -42,27 +41,21 @@ export default class Execute extends Command {
     this.log('File accepted!');
     if (bid) {
       const exec = await readContract(
-        Constants.client,
-        Constants.contractID
+        ArweaveUtils.client,
+        ArweaveUtils.contractID
       );
       const data = exec.executables;
       // Implement method to automatically return lowest bid
-      console.log(araddress, Constants.isPath(araddress))
+      console.log(araddress, ArweaveUtils.isPath(araddress));
       // Console.log(typeof Object.values(data[dataAddress].bids))
-      console.log(data[dataAddress].bids[0])
-      await interactWriteDryRun(
-        Constants.client,
-        Constants.jwk(araddress),
-        Constants.contractID,
-        {
-          function: 'accept',
-          executable_key: dataAddress,
-          accepted_bid: data[dataAddress].bids[0]
-        }
-      ).catch((error)=>{
-          console.log(error)
-      })
+      console.log(data[dataAddress].bids[0]);
+      await ArweaveUtils.write(araddress, {
+        function: 'accept',
+        executable_key: dataAddress,
+        accepted_bid: data[dataAddress].bids[0]
+      });
     }
+
     console.log('Upload Complete');
   }
 

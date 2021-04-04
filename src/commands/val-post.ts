@@ -1,12 +1,8 @@
 import {Command} from '@oclif/command';
 import {readFileSync} from 'fs';
 import {prompt} from 'inquirer';
-import {
-  interactWrite,
-  interactWriteDryRun,
-  readContract
-} from 'smartweave';
-import {Constants} from '../i';
+import {readContract} from 'smartweave';
+import {ArweaveUtils} from '../i';
 import {createHash} from 'crypto';
 import Arweave from 'arweave';
 interface ExecData {
@@ -23,7 +19,7 @@ export default class ExecuteGetFile extends Command {
         name: 'araddress',
         message: 'Type/Drop in the path to your ARWeave key-file: ',
         default: null,
-        validate: (value) => Constants.isPath(value)
+        validate: (value) => ArweaveUtils.isPath(value)
       },
       {
         type: 'checkbox',
@@ -41,7 +37,7 @@ export default class ExecuteGetFile extends Command {
         message:
           'Type/Drop in the path to the file you have validated: ',
         default: null,
-        validate: (value) => Constants.isPath(value)
+        validate: (value) => ArweaveUtils.isPath(value)
       },
       {
         type: 'confirm',
@@ -55,8 +51,8 @@ export default class ExecuteGetFile extends Command {
   async makeExec(execData: ExecData) {
     const {executable, araddress, fileaddress} = execData;
     const contract = await readContract(
-      Constants.client,
-      Constants.contractID
+      ArweaveUtils.client,
+      ArweaveUtils.contractID
     ).catch((error) => {
       console.log(error);
     });
@@ -69,14 +65,14 @@ export default class ExecuteGetFile extends Command {
     );
     const remoteFile:
       | string
-      | Uint8Array = await Constants.client.transactions.getData(
+      | Uint8Array = await ArweaveUtils.client.transactions.getData(
       add,
       {decode: true}
     );
     const hash = createHash('sha256').update(localFile).digest('hex');
     const validationObject: Record<string, unknown> = {
       hash,
-      is_correct: equal(localBuffer, (remoteFile as Uint8Array))
+      is_correct: equal(localBuffer, remoteFile as Uint8Array)
     };
     const validationObjectEncrypted = await Arweave.crypto
       .encrypt(Buffer.from(JSON.stringify(validationObject)), 'sokka')
@@ -84,21 +80,11 @@ export default class ExecuteGetFile extends Command {
         return Buffer.from(_).toString('hex');
       });
     console.log(validationObjectEncrypted);
-    interactWrite(
-      Constants.client,
-      Constants.jwk(araddress),
-      Constants.contractID,
-      {
-        function: 'validate_lock',
-        executable_key: executable,
-        encrypted_obj: validationObjectEncrypted
-      }
-    ).then((data) => {
-        console.log(data)
-    }).catch((error) => {
-      console.log(error);
+    ArweaveUtils.write(araddress, {
+      function: 'validate_lock',
+      executable_key: executable,
+      encrypted_obj: validationObjectEncrypted
     });
-
     console.log('Upload Complete');
   }
 
@@ -117,8 +103,8 @@ export default class ExecuteGetFile extends Command {
 // Getting executables
 async function getContract() {
   const exec = await readContract(
-    Constants.client,
-    Constants.contractID
+    ArweaveUtils.client,
+    ArweaveUtils.contractID
   ).catch((error) => {
     console.log(error);
   });

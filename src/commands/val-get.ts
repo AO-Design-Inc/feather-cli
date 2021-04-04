@@ -1,7 +1,7 @@
 import {Command} from '@oclif/command';
 import {prompt} from 'inquirer';
 import {readContract} from 'smartweave';
-import {Constants} from '../i';
+import {ArweaveUtils} from '../i';
 import {https} from 'follow-redirects';
 import {createWriteStream, open} from 'fs';
 interface ExecData {
@@ -19,7 +19,7 @@ export default class ExecuteGetFile extends Command {
           {name: 1, value: 1},
           {name: 2, value: 2}
         ],
-        choices: async () => getContract()
+        choices: async () => ArweaveUtils.getContract()
       },
       {
         type: 'confirm',
@@ -29,11 +29,12 @@ export default class ExecuteGetFile extends Command {
     ]);
     return answer;
   }
+
   async makeExec(execData: ExecData) {
     const {executable} = execData;
     const contract = await readContract(
-      Constants.client,
-      Constants.contractID
+      ArweaveUtils.client,
+      ArweaveUtils.contractID
     ).catch((error) => {
       console.log(error);
     });
@@ -47,7 +48,7 @@ export default class ExecuteGetFile extends Command {
       if (value) {
         const add = execAddress[value];
         const ref = `https://arweave.net/${add}`;
-        const transaction = await Constants.client.transactions
+        const transaction = await ArweaveUtils.client.transactions
           .get(add)
           .then((transaction) => {
             for (const tag of transaction.get('tags')) {
@@ -70,6 +71,7 @@ export default class ExecuteGetFile extends Command {
       }
     }
   }
+
   async run() {
     this.log('Welcome to Feather');
     const {args, flags} = this.parse(ExecuteGetFile);
@@ -82,25 +84,5 @@ export default class ExecuteGetFile extends Command {
           }
         : await this.getInteractiveArgs();
     await this.makeExec(execData);
-  }
-}
-// Getting executables from contract
-async function getContract() {
-  try {
-    const exec = await readContract(
-      Constants.client,
-      Constants.contractID
-    ).catch((error) => {
-      console.log(error);
-    });
-    const data = exec.executables;
-    const inputArray = [];
-    for (const i in data)
-      if (i) {
-        inputArray.push({name: i, value: i});
-      }
-    return inputArray;
-  } catch (error) {
-    console.error(error);
   }
 }
